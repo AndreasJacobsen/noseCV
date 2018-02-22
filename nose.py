@@ -24,12 +24,12 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     nose_rects = nose_cascade.detectMultiScale(gray, 1.3, 5)
-    # tegner en firkant rundt nesa 
+    # tegner en firkant rundt nesa
     for (x,y,w,h) in nose_rects:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
         break
 
-    cv2.imshow('Nose Detector', frame)
+    cv2.imshow('Nesehorn deteksjonsprogram', frame)
 # venter 1 millisekund før den fanger den neste framen
     c = cv2.waitKey(1)
 # Lukker programmet om vi klikker på esc knappen, wait i 1 millisekund (sjekk dette) før vi kan lukke programmet
