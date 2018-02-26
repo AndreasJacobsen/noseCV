@@ -1,6 +1,12 @@
 # Here we import openCV2. We can change the name of this import by typing "as" and give it another name. We are not doing this.
 import cv2
 import os
+from pymouse import PyMouse as mouse
+# TODO: Delete this example and implement mouse
+# TODO: Implement eyes casacde
+m = mouse()
+m.move(2,42)
+
 
 # PLEASE NOTE This program requires pywin32 to run in Windows
 # Sadly since pywin32 contains allot of C++ it cannot be installed through pip
@@ -11,12 +17,23 @@ import os
 #The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
 #Here we create a relative path so that the software can be used on different computers without getting path errors.
 dir = os.path.dirname(__file__)
-filename = os.path.join(dir, 'haarcascade_mcs_nose.xml')
-nose_cascade = cv2.CascadeClassifier(filename)
+nosefile = os.path.join(dir, 'haarcascade_mcs_nose.xml')
+facefile = os.path.join(dir, 'haarcascade_frontalface_default.xml')
+eyefile = os.path.join(dir, 'eyes.xml')
+nose_cascade = cv2.CascadeClassifier(nosefile)
+face_cascade = cv2.CascadeClassifier(facefile)
+eye_cascade = cv2.CascadeClassifier(eyefile)
 
 #At this time it we want to have a checker that throws an error if there is any issues with the xml file handling.
 if nose_cascade.empty():
-  raise IOError('Unable to load the nose cascade classifier xml file')
+  raise IOError('Unable to load the nose cascade xml file')
+
+if face_cascade.empty():
+    raise IOError('Unable to load the face cascade xml file')
+
+if eye_cascade.empty():
+    raise IOError('Unable to load the eye cascade xml file')
+
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one.from
@@ -35,9 +52,17 @@ while True:
     # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     nose_rects = nose_cascade.detectMultiScale(gray, 1.3, 5)
-    # Here we draw the square around the nose that is detected.
+    face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
+    eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
+    # Here we draw the square around the nose, face and eyes that is detected.
     for (x,y,w,h) in nose_rects:
+        cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
+        break
+    for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
+        break
+    for (x,y,w,h) in eye_rect:
+        cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
         break
 
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
