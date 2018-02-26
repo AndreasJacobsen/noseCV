@@ -1,0 +1,6 @@
+numpy==1.14.1
+opencv-python==3.4.0.12
+python-xlib==0.21
+PyUserInput==0.1.11
+six==1.11.0
+xlib==0.21
