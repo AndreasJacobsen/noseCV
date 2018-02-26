@@ -1,11 +1,9 @@
 # Here we import openCV2. We can change the name of this import by typing "as" and give it another name. We are not doing this.
 import cv2
 import os
-from pymouse import PyMouse as mouse
+from pymouse import PyMouse
 # TODO: Delete this example and implement mouse
 # TODO: Implement eyes casacde
-m = mouse()
-m.move(2,42)
 
 m = PyMouse()
 # PLEASE NOTE This program requires pywin32 to run in Windows
@@ -62,7 +60,8 @@ while True:
         break
     for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
-        m.move(x, y)
+        m.move(x*4, y*4)
+
         break
     for (x,y,w,h) in eye_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
