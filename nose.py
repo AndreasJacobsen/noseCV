@@ -2,7 +2,7 @@
 import cv2
 import os
 
-# PLEASE NOT This program requires pywin32 to run in Windows
+# PLEASE NOTE This program requires pywin32 to run in Windows
 # Sadly since pywin32 contains allot of C++ it cannot be installed through pip
 # Download PyWin excecutable from https://github.com/mhammond/pywin32/releases
 # Works in Linux through pip packages included in requirements.txt
