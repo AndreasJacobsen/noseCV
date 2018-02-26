@@ -2,6 +2,11 @@
 import cv2
 import os
 
+# PLEASE NOT This program requires pywin32 to run in Windows
+# Sadly since pywin32 contains allot of C++ it cannot be installed through pip
+# Download PyWin excecutable from https://github.com/mhammond/pywin32/releases
+# Works in Linux through pip packages included in requirements.txt
+
 # Here we download the nose cascade file. This is the xml file that contains the code for recognizing  noses.
 #The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
 #Here we create a relative path so that the software can be used on different computers without getting path errors.
