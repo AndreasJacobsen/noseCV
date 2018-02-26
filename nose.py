@@ -7,7 +7,7 @@ from pymouse import PyMouse as mouse
 m = mouse()
 m.move(2,42)
 
-
+m = PyMouse()
 # PLEASE NOTE This program requires pywin32 to run in Windows
 # Sadly since pywin32 contains allot of C++ it cannot be installed through pip
 # Download PyWin excecutable from https://github.com/mhammond/pywin32/releases
@@ -52,6 +52,8 @@ while True:
     # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     nose_rects = nose_cascade.detectMultiScale(gray, 1.3, 5)
+    # Here we draw the square around the nose that is detected.
+    x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
@@ -60,6 +62,7 @@ while True:
         break
     for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
+        m.move(x, y)
         break
     for (x,y,w,h) in eye_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
