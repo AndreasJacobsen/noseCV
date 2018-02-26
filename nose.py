@@ -1,9 +1,13 @@
 # Importerer cv2, vi kan sette den som "as cv" om vi ikke gidder å skrive cv2 i fremtiden
 import cv2
+import os
 
 # Laster nose cascade filen, filen henten fra https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
 # NB Bug i file path, du må sette din egen file path
-nose_cascade = cv2.CascadeClassifier('/home/andreas/PycharmProjects/learnOpen/haarcascade_mcs_nose.xml')
+
+dir = os.path.dirname(os.path.abspath(__file__))
+filename = os.path.join(dir, 'haarcascade_mcs_nose.xml')
+nose_cascade = cv2.CascadeClassifier(filename)
 
 if nose_cascade.empty():
   raise IOError('Unable to load the nose cascade classifier xml file')
@@ -22,7 +26,6 @@ while True:
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
     # face detectoren kjører bare med sort hvit bilder, så vi konverterer til grayscale her
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
     nose_rects = nose_cascade.detectMultiScale(gray, 1.3, 5)
     # tegner en firkant rundt nesa
     for (x,y,w,h) in nose_rects:
