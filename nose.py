@@ -47,6 +47,7 @@ ds_factor = 1
 while True:
     # Capture the frames right now
     ret, frame = cap.read()
+    frame = cv2.flip(frame, 1)
     # Re-size based on the factor from before.
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
     # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
@@ -59,7 +60,7 @@ while True:
     # Here we draw the square around the nose, face and eyes that is detected.
     for (x,y,w,h) in nose_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
-        m.move(x * 4, y * 4)
+        m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
         break
     for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
