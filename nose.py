@@ -22,16 +22,18 @@ nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
 
-#At this time it we want to have a checker that throws an error if there is any issues with the xml file handling.
+# Error handling for empty files, due to us not wanting to force user to install GTK or QT these errors are displayed in the terminal instead
 if nose_cascade.empty():
-  raise IOError('Unable to load the nose cascade xml file')
+    raise IOError('Unable to load the nose cascade xml file')
+    cv2.destroyAllWindows()
 
 if face_cascade.empty():
     raise IOError('Unable to load the face cascade xml file')
+    cv2.destroyAllWindows()
 
 if eye_cascade.empty():
     raise IOError('Unable to load the eye cascade xml file')
-
+    cv2.destroyAllWindows()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one.from
@@ -49,13 +51,13 @@ while True:
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
     # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    nose_rects = nose_cascade.detectMultiScale(gray, 1.3, 5)
+    nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose that is detected.
     x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
-    for (x,y,w,h) in nose_rects:
+    for (x,y,w,h) in nose_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
         break
     for (x,y,w,h) in face_rect:
