@@ -1,11 +1,9 @@
 # Here we import openCV2. We can change the name of this import by typing "as" and give it another name. We are not doing this.
 import cv2
 import os
-from pymouse import PyMouse as mouse
+from pymouse import PyMouse
 # TODO: Delete this example and implement mouse
 # TODO: Implement eyes casacde
-m = mouse()
-m.move(2,42)
 
 m = PyMouse()
 # PLEASE NOTE This program requires pywin32 to run in Windows
@@ -24,16 +22,18 @@ nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
 
-#At this time it we want to have a checker that throws an error if there is any issues with the xml file handling.
+# Error handling for empty files, due to us not wanting to force user to install GTK or QT these errors are displayed in the terminal instead
 if nose_cascade.empty():
     raise IOError('Unable to load the nose cascade xml file')
+    cv2.destroyAllWindows()
 
 if face_cascade.empty():
     raise IOError('Unable to load the face cascade xml file')
+    cv2.destroyAllWindows()
 
 if eye_cascade.empty():
     raise IOError('Unable to load the eye cascade xml file')
-
+    cv2.destroyAllWindows()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one.from
