@@ -26,7 +26,7 @@ eye_cascade = cv2.CascadeClassifier(eyefile)
 
 #At this time it we want to have a checker that throws an error if there is any issues with the xml file handling.
 if nose_cascade.empty():
-  raise IOError('Unable to load the nose cascade xml file')
+    raise IOError('Unable to load the nose cascade xml file')
 
 if face_cascade.empty():
     raise IOError('Unable to load the face cascade xml file')
