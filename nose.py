@@ -59,10 +59,10 @@ while True:
     # Here we draw the square around the nose, face and eyes that is detected.
     for (x,y,w,h) in nose_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
+        m.move(x * 4, y * 4)
         break
     for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
-        m.move(x*4, y*4)
 
         break
     for (x,y,w,h) in eye_rect:
