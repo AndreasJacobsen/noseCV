@@ -2,19 +2,19 @@
 import cv2
 # Here we import time to use sleep function for waiting during the loop
 import time
-# Here we import information about the opperating system to ensure that the correct path for the xml files are used.
+# Here we import information about the operating system to ensure that the correct path for the xml files are used.
 import os
 #Here we import pymouse, a framework which makes mainpulation of the mouse cursor possible.
 from pymouse import PyMouse
 
-# TODO: Implement eyes casacde
-
-####################! PLEASE NOTE !########################
+####################! PLEASE NOTE !############################
 # PLEASE NOTE This program requires pywin32 to run in Windows
 # Sadly since pywin32 contains allot of C++ it cannot be installed through pip
-# Download PyWin excecutable from https://github.com/mhammond/pywin32/releases
+# Download PyWin executable from https://github.com/mhammond/pywin32/releases
+# For MacOS/OS X install Quartz and AppKit
 # Works in Linux through pip packages included in requirements.txt
-#######################################################
+#PLEASE NOTE This program is only designed to work with one nose at a time
+##########################################################
 
 # Here we download the nose cascade, face cascade and eye cascade file. This is the xml files that contains the code for recognizing  specific parts of the body.
 # The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
@@ -28,8 +28,7 @@ nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
 
-# Here we set a variable m to PyMouse for later use.
-m = PyMouse()
+
 
 # Error handling for empty files, due to us not wanting to force user to install GTK or QT these errors are displayed in the terminal instead
 if nose_cascade.empty():
@@ -43,6 +42,9 @@ if face_cascade.empty():
 if eye_cascade.empty():
     raise IOError('Unable to load the eye cascade xml file')
     cv2.destroyAllWindows()
+
+# Starting PyMouse for later use inside our loops
+m = PyMouse()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one)
@@ -60,7 +62,7 @@ while True:
     frame = cv2.flip(frame, 1)
     # Re-size based on the factor from before.
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
-    # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
+    # Since the face-detector only works on black and white images we convert the image to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose that is detected.
@@ -68,7 +70,9 @@ while True:
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
-    if(len(nose_rect)>0): 
+    # First we check if nose_rect contains any data
+    # if not we use the face for mouse navigation instead
+    if(len(nose_rect)>0):
         print ("Detecting nose at ",nose_rect, " using nose to move the mouse")
         for (x,y,w,h) in nose_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
@@ -93,7 +97,6 @@ while True:
     time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
     if cv2.waitKey(1) & 0xFF == ord('q') or cv2.waitKey(1) == 27: #exit on pressing 'q' or esc TODO: Esc is not working
         break
-
 
 # Here we release the webcam to be used by other programs before we shut down the program.
 cap.release()
