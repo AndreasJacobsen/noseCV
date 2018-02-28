@@ -1,19 +1,22 @@
 # Here we import openCV2. We can change the name of this import by typing "as" and give it another name. We are not doing this.
 import cv2
+# Here we import information about the opperating system to ensure that the correct path for the xml files are used.
 import os
+#Here we import pymouse, a framework which makes mainpulation of the mouse cursor possible.
 from pymouse import PyMouse
-# TODO: Delete this example and implement mouse
+
 # TODO: Implement eyes casacde
 
-m = PyMouse()
+####################! PLEASE NOTE !########################
 # PLEASE NOTE This program requires pywin32 to run in Windows
 # Sadly since pywin32 contains allot of C++ it cannot be installed through pip
 # Download PyWin excecutable from https://github.com/mhammond/pywin32/releases
 # Works in Linux through pip packages included in requirements.txt
+#######################################################
 
-# Here we download the nose cascade file. This is the xml file that contains the code for recognizing  noses.
-#The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
-#Here we create a relative path so that the software can be used on different computers without getting path errors.
+# Here we download the nose cascade, face cascade and eye cascade file. This is the xml files that contains the code for recognizing  specific parts of the body.
+# The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
+# Here we create a relative path so that the software can be used on different computers without getting path errors.
 dir = os.path.dirname(__file__)
 nosefile = os.path.join(dir, 'haarcascade_mcs_nose.xml')
 facefile = os.path.join(dir, 'haarcascade_frontalface_default.xml')
@@ -21,6 +24,9 @@ eyefile = os.path.join(dir, 'eyes.xml')
 nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
+
+# Here we set a variable m to PyMouse for later use.
+m = PyMouse()
 
 # Error handling for empty files, due to us not wanting to force user to install GTK or QT these errors are displayed in the terminal instead
 if nose_cascade.empty():
@@ -36,17 +42,18 @@ if eye_cascade.empty():
     cv2.destroyAllWindows()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
-#  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one.from
+#  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one)
 # IF the user is using an external camera instead of an his/hers intergrated one, we would have to change the input to 1.
 cap = cv2.VideoCapture(0)
-# display_factor is set to 1 to keep the original size of the captured image.. (Might be an issue if screen is lower ress than webcam).
-# this facot will be used further down in the frame variable that contains cv2.resize.
+# Display_factor is set to 1 to keep the original size of the captured image.. (Might be an issue if screen is lower ress than webcam).
+# This factor will be used further down in the frame variable that contains cv2.resize.
 ds_factor = 1
 
 #  Here we start a loop that will countinue uintill the Esc-button is pushed (27).
 while True:
     # Capture the frames right now
     ret, frame = cap.read()
+    # Flipping the image so that moving nose to the left equivilates to moving cursor left.
     frame = cv2.flip(frame, 1)
     # Re-size based on the factor from before.
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
@@ -60,18 +67,19 @@ while True:
     # Here we draw the square around the nose, face and eyes that is detected.
     for (x,y,w,h) in nose_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
+        #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
+        # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
         m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
         break
     for (x,y,w,h) in face_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
-
         break
     for (x,y,w,h) in eye_rect:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
         break
 
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
-# venter 1 millisekund før den fanger den neste framen
+# Waiting 1 millisecond to show the next frame.
     c = cv2.waitKey(1)
 # Close the program if the escape key is cli ked. The number 27 directs to the escape key.
     if c == 27:
