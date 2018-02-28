@@ -78,6 +78,7 @@ while True:
         print ("Only Face at ",face_rect)
         for (x,y,w,h) in face_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
+            m.move(x * 4, y * 4)
     elif (len(face_rect)>0):
         print ("Only Eye at ",eye_rect)
         for (x,y,w,h) in eye_rect:
@@ -89,8 +90,9 @@ while True:
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
 
     time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
-    if (cv2.waitKey(1) & 0xFF == ord('q')):#exit on pressing 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q') or cv2.waitKey(1) == 27: #exit on pressing 'q' or esc TODO: Esc is not working
         break
+
 
 # Here we release the webcam to be used by other programs before we shut down the program.
 cap.release()
