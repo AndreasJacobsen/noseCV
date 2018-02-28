@@ -68,14 +68,14 @@ while True:
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
     if(len(nose_rect)>0): 
-        print ("Only Nose at ",nose_rect)
+        print ("Detecting nose at ",nose_rect, " using nose to move the mouse")
         for (x,y,w,h) in nose_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
             #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
             # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-            m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
+            m.move(x * 4, y * 4)
     elif (len(face_rect)>0):
-        print ("Only Face at ",face_rect)
+        print ("No nose detected, falling back to face at coordinates ",face_rect)
         for (x,y,w,h) in face_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
             m.move(x * 4, y * 4)
@@ -84,7 +84,7 @@ while True:
         for (x,y,w,h) in eye_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
     else:
-        print ("Nothing detected.")
+        print ("Nothing detected, can't controll mouse using nose or face.")
 
     
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
