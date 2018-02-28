@@ -80,8 +80,8 @@ while True:
     #smile_rect = smile_cascade.detectMultiScale(gray,1.3, 5)
     palm_rect = palm_cascade.detectMultiScale(gray,1.3,1)
     # Here we draw the square around the nose, face and eyes that is detected.
-    if(len(nose_rect)>0):
-        print ("Only Nose at ",nose_rect)
+    if(len(nose_rect)>0): 
+        print ("Detecting nose at ",nose_rect, " using nose to move the mouse")
         for (x,y,w,h) in nose_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
             #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
@@ -96,7 +96,7 @@ while True:
             if cv2.waitKey(1) == 27:  # exit on pressing 'q' or esc TODO: Esc is not working
                 break
     elif (len(face_rect)>0):
-        print ("Only Face at ",face_rect)
+        print ("No nose detected, falling back to face at coordinates ",face_rect)
         for (x,y,w,h) in face_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
             m.move(x * 3, y * 3)
@@ -106,7 +106,7 @@ while True:
             if cv2.waitKey(1) == 27:  # exit on pressing 'q' or esc TODO: Esc is not working
                 break
     else:
-        print ("Nothing detected.")
+        print ("Nothing detected, can't controll mouse using nose or face.")
 
     
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
