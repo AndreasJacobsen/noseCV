@@ -1,5 +1,7 @@
 # Here we import openCV2. We can change the name of this import by typing "as" and give it another name. We are not doing this.
 import cv2
+# Here we import time to use sleep function for waiting during the loop
+import time
 # Here we import information about the opperating system to ensure that the correct path for the xml files are used.
 import os
 #Here we import pymouse, a framework which makes mainpulation of the mouse cursor possible.
@@ -65,25 +67,31 @@ while True:
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
-    for (x,y,w,h) in nose_rect:
-        cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
-        #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
-        # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-        m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
-        break
-    for (x,y,w,h) in face_rect:
-        cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
-        break
-    for (x,y,w,h) in eye_rect:
-        cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
+    if(len(nose_rect)>0): 
+        print ("Only Nose at ",nose_rect)
+        for (x,y,w,h) in nose_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
+            #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
+            # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
+            m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
+    elif (len(face_rect)>0):
+        print ("Only Face at ",face_rect)
+        for (x,y,w,h) in face_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
+    elif (len(face_rect)>0):
+        print ("Only Eye at ",eye_rect)
+        for (x,y,w,h) in eye_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
+    else:
+        print ("Nothing detected.")
+
+    
+    cv2.imshow('Nesehorn deteksjonsprogram', frame)
+
+    time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
+    if (cv2.waitKey(1) & 0xFF == ord('q')):#exit on pressing 'q'
         break
 
-    cv2.imshow('Nesehorn deteksjonsprogram', frame)
-# Waiting 1 millisecond to show the next frame.
-    c = cv2.waitKey(1)
-# Close the program if the escape key is cli ked. The number 27 directs to the escape key.
-    if c == 27:
-        break
 # Here we release the webcam to be used by other programs before we shut down the program.
 cap.release()
 # Terminating the window the software is running in. 
