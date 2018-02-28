@@ -24,10 +24,12 @@ nosefile = os.path.join(dir, 'haarcascade_mcs_nose.xml')
 facefile = os.path.join(dir, 'haarcascade_frontalface_default.xml')
 eyefile = os.path.join(dir, 'eyes.xml')
 smilefile = os.path.join(dir, 'smile.xml')
+palmfile = os.path.join(dir, 'palm.xml')
 nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
-
+#smile_cascade = cv2.CascadeClassifier(smilefile)
+palm_cascade = cv2.CascadeClassifier(palmfile)
 # Here we set a variable m to PyMouse for later use.
 m = PyMouse()
 
@@ -44,6 +46,13 @@ if eye_cascade.empty():
     raise IOError('Unable to load the eye cascade xml file')
     cv2.destroyAllWindows()
 
+# if smile_cascade.empty():
+#     raise IOError('Unable to load the smile cascade xml file')
+#     cv2.destroyAllWindows()
+if palm_cascade.empty():
+    raise IOError('Unable to load the palm cascade cml file')
+    cv2.destroyAllWindows()
+
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one)
 # IF the user is using an external camera instead of an his/hers intergrated one, we would have to change the input to 1.
@@ -51,7 +60,7 @@ cap = cv2.VideoCapture(0)
 # Display_factor is set to 1 to keep the original size of the captured image.. (Might be an issue if screen is lower ress than webcam).
 # This factor will be used further down in the frame variable that contains cv2.resize.
 ds_factor = 1
-
+c = cv2.waitKey(33) & 0xFF
 #  Here we start a loop that will countinue uintill the Esc-button is pushed (27).
 while True:
     # Capture the frames right now
@@ -62,28 +71,40 @@ while True:
     frame = cv2.resize(frame, None, fx=ds_factor, fy=ds_factor, interpolation=cv2.INTER_AREA)
     # Since the face-detector only works on balck and white images we do a convertion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
+
     # Here we draw the square around the nose that is detected.
     x_dim, y_dim = m.screen_size()
+    nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
+    #smile_rect = smile_cascade.detectMultiScale(gray,1.3, 5)
+    palm_rect = palm_cascade.detectMultiScale(gray,1.3,1)
     # Here we draw the square around the nose, face and eyes that is detected.
-    if(len(nose_rect)>0): 
+    if(len(nose_rect)>0):
         print ("Only Nose at ",nose_rect)
         for (x,y,w,h) in nose_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
             #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
-            # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-            m.move(x * 4, y * 4)
+            # We have set the variable times 3 as to make the cursor start aprox in the middel.
+            m.move(x * 3, y * 3)
+
+            if cv2.waitKey(2) == 32:
+                m.click(x*3, y*3, 2)
+                print("Click!")
+            # if(len(palm_rect)>0):
+            #      m.click(x,y,1)
+            if cv2.waitKey(1) == 27:  # exit on pressing 'q' or esc TODO: Esc is not working
+                break
     elif (len(face_rect)>0):
         print ("Only Face at ",face_rect)
         for (x,y,w,h) in face_rect:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
-            m.move(x * 4, y * 4)
-    elif (len(face_rect)>0):
-        print ("Only Eye at ",eye_rect)
-        for (x,y,w,h) in eye_rect:
-            cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
+            m.move(x * 3, y * 3)
+            if cv2.waitKey(2) == 32:
+                m.click(x*3, y*3, 2)
+                print("Click!")
+            if cv2.waitKey(1) == 27:  # exit on pressing 'q' or esc TODO: Esc is not working
+                break
     else:
         print ("Nothing detected.")
 
@@ -91,7 +112,7 @@ while True:
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
 
     time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
-    if cv2.waitKey(1) & 0xFF == ord('q') or cv2.waitKey(1) == 27: #exit on pressing 'q' or esc TODO: Esc is not working
+    if cv2.waitKey(1) == 27: #exit on pressing 'q' or esc TODO: Esc is not working
         break
 
 
