@@ -23,6 +23,7 @@ dir = os.path.dirname(__file__)
 nosefile = os.path.join(dir, 'haarcascade_mcs_nose.xml')
 facefile = os.path.join(dir, 'haarcascade_frontalface_default.xml')
 eyefile = os.path.join(dir, 'eyes.xml')
+smilefile = os.path.join(dir, 'smile.xml')
 nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
@@ -73,7 +74,7 @@ while True:
             cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
             #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
             # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-            m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
+            m.move(x * 4, y * 4)
     elif (len(face_rect)>0):
         print ("Only Face at ",face_rect)
         for (x,y,w,h) in face_rect:
