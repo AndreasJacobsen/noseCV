@@ -50,9 +50,10 @@ m = PyMouse()
 # if smile_cascade.empty():
 #     raise IOError('Unable to load the smile cascade xml file')
 #     cv2.destroyAllWindows()
-if palm_cascade.empty():
-    raise IOError('Unable to load the palm cascade cml file')
-    cv2.destroyAllWindows()
+#denne var buggy
+#if palm_cascade.empty():
+  #  raise IOError('Unable to load the palm cascade cml file')
+   # cv2.destroyAllWindows()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 #  In this case we have set it to 0 (expecting the user to use a intergrated camera if they have one)
@@ -79,7 +80,7 @@ while True:
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     #smile_rect = smile_cascade.detectMultiScale(gray,1.3, 5)
-    palm_rect = palm_cascade.detectMultiScale(gray,1.3,1)
+    #hpalm_rect = palm_cascade.detectMultiScale(gray,1.3,1)
     # Here we draw the square around the nose, face and eyes that is detected.
     # First we check if nose_rect contains any data
     # if not we use the face for mouse navigation instead
@@ -114,8 +115,10 @@ while True:
     
     cv2.imshow('Nesehorn deteksjonsprogram', frame)
 
-    time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
-    if cv2.waitKey(1) == 27: #exit on pressing 'q' or esc TODO: Esc is not working
+    time.sleep(0.001)  # Waiting 1 millisecond to show the next frame.
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # exit on pressing 'q'
+        break
+    elif cv2.waitKey(1) == 27:
         break
 
 # Here we release the webcam to be used by other programs before we shut down the program.
