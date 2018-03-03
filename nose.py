@@ -20,9 +20,9 @@ from pymouse import PyMouse
 # The file is optained from https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
 # Here we create a relative path so that the software can be used on different computers without getting path errors.
 dir = os.path.dirname(__file__)
-nosefile = os.path.join(dir, 'haarcascade_mcs_nose.xml')
-facefile = os.path.join(dir, 'haarcascade_frontalface_default.xml')
-eyefile = os.path.join(dir, 'eyes.xml')
+nosefile = os.path.join(dir, 'cascade/haarcascade_mcs_nose.xml')
+facefile = os.path.join(dir, 'cascade/haarcascade_frontalface_default.xml')
+eyefile = os.path.join(dir, 'cascade/eyes.xmlqq')
 nose_cascade = cv2.CascadeClassifier(nosefile)
 face_cascade = cv2.CascadeClassifier(facefile)
 eye_cascade = cv2.CascadeClassifier(eyefile)
