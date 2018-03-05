@@ -79,7 +79,11 @@ while True:
             # m (the variable created before), should move the mouse using the x, and y variable from the nose rect.
             # We accelerate movement speed by 4 to make it possible to navigate the cursor through the whole screen.
             m.move(x * 4, y * 4)
-            # TODO: Write and if that goes into face if nose is not visible
+            if cv2.waitKey(1) & 0xFF == ord('c'):
+                m.click(x * 4, y * 4, 1)
+                print("CLICK")
+
+        # TODO: Write and if that goes into face if nose is not visible
     elif len(face_rect) > 0:
         print("Only Face at ", face_rect)
         for (x, y, w, h) in face_rect:
@@ -95,13 +99,12 @@ while True:
 
     # Waiting 1 millisecond to show the next frame.
     time.sleep(0.001)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(2) & 0xFF == ord('q'):
         # Exit on pressing 'q'.
         break
-    if cv2.waitKey(1) == 27:
-        break
-
+        # Exit on pressing 'q'.
 # Here we release the web cam to be used by other programs before we shut down the program.
 cap.release()
 # Terminating the window the software is running in. 
 cv2.destroyAllWindows()
+cv2.waitKey(1)
