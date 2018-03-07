@@ -12,7 +12,7 @@ For mouse movement there are differnet requirements for different operating syst
 #### Linux requirements
 * [xlib](https://github.com/python-xlib/python-xlib)  (comes default with most Linux distros) 
 
-### MacOS / OSX requirements
+#### MacOS / OSX requirements
 * [Quartz](https://www.xquartz.org/)
 * [AppKit](https://developer.apple.com/documentation/appkit)
 
