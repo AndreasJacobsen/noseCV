@@ -1,5 +1,5 @@
 # Example usecase.
-This given example was run under Linux Min 18.3
+This given example was run using Linux Mint 18.3 as operating system.
 
 #### Requirements
 * [antimicro](https://github.com/AntiMicro/antimicro)
