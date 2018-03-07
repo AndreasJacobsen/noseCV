@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 # Rhino 
-A Python application that allows a user to controll the mouse using the nose using [OpenCV](https://opencv.org/) and [PyUserInput](https://github.com/PyUserInput/PyUserInput)
+A Python application that allows a user to controll the mouse using the nose with help from [OpenCV](https://opencv.org/) and [PyUserInput](https://github.com/PyUserInput/PyUserInput)
 
 ## Installation 
 Rhino requires OpenCV 3.4 but may work in other version, only running OpenCV as a pip-package may significantly reduce performance. 
