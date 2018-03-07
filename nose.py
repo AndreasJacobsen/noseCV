@@ -5,6 +5,7 @@ import time
 # Here we import os to ensure that the correct path for the xml files are used cross-os.
 import os
 # Here we import pymouse, a framework which makes manipulation of the mouse cursor possible.
+# This comes from PyUserInput in requirements.tct
 from pymouse import PyMouse
 
 ##########################! PLEASE NOTE !############################
