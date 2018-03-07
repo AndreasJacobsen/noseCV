@@ -3,7 +3,7 @@ This given example was run under Linux Min 18.3
 
 #### Requirements
 * [antimicro](https://github.com/AntiMicro/antimicro)
-* [Requirements for Rhino](https://github.com/AntiMicro/antimicro)
+* [Requirements for Rhino](https://github.com/AndreasJacobsen/noseCV/blob/master/README.md)
 ## Alternate input
 Rhino can use any input from input devices supported by the OS, including [compose key](https://en.wikipedia.org/wiki/Compose_key) input.
 This enables us to use alternate buttons, in this project we used two  [3D printer buttons](https://www.thingiverse.com/thing:14887) connected to a retrolink NES controller.
