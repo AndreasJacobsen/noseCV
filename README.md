@@ -3,7 +3,7 @@
 A Python application that allows a user to controll the mouse using the nose with help from [OpenCV](https://opencv.org/) and [PyUserInput](https://github.com/PyUserInput/PyUserInput)
 
 ## Installation 
-Rhino requires OpenCV 3.4 but may work in other version, only running OpenCV as a pip-package may significantly reduce performance. 
+Rhino requires * [OpenCV 3.4](https://opencv.org/opencv-3-4.html) but may work in other version, only running OpenCV as a pip-package may significantly reduce performance. 
 For mouse movement there are differnet requirements for different operating systems
 #### Windows requirements
 * [pywin32](https://sourceforge.net/projects/pywin32/)
