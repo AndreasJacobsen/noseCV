@@ -7,8 +7,6 @@ import os
 # Here we import pymouse, a framework which makes manipulation of the mouse cursor possible.
 from pymouse import PyMouse
 
-# TODO: Implement eyes casacde
-
 ##########################! PLEASE NOTE !############################
 #                   PLEASE NOTE This program requires pywin32 to run in Windows                         #
 #           Sadly since pywin32 contains allot of C++ it cannot be installed through pip              #
@@ -24,10 +22,8 @@ from pymouse import PyMouse
 directory = os.path.dirname(__file__)
 noseXML = os.path.join(directory, 'cascade/haarcascade_mcs_nose.xml')
 faceXML = os.path.join(directory, 'cascade/haarcascade_frontalface_default.xml')
-eyeXML = os.path.join(directory, 'cascade/eyes.xml')
 nose_cascade = cv2.CascadeClassifier(noseXML)
 face_cascade = cv2.CascadeClassifier(faceXML)
-eye_cascade = cv2.CascadeClassifier(eyeXML)
 
 # Here we set a variable m to PyMouse for later use.
 m = PyMouse()
@@ -43,9 +39,6 @@ if face_cascade.empty():
     raise IOError('Unable to load the face cascade xml file')
     cv2.destroyAllWindows()
 
-if eye_cascade.empty():
-    raise IOError('Unable to load the eye cascade xml file')
-    cv2.destroyAllWindows()
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
 # In this case we have set it to 0 (expecting the user to use a integrated camera if they have one).
@@ -56,7 +49,8 @@ cap = cv2.VideoCapture(0)
 # This factor will be used further down in the frame variable that contains cv2.resize.
 ds_factor = 1
 
-#  Here we start a loop that will continue until the Esc-button is pushed (27) .
+#  Here we start a loop that will continue until the Q-button is pushed when nose is not detected.
+# This means that if you want to close the program, hold you're nose and press the Q-key.
 while True:
     # Capture the frames right now.
     ret, frame = cap.read()
@@ -67,11 +61,9 @@ while True:
     # Since the face-detector only works on black and white images we do a conversion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
-    # Here we draw the square around the nose that is detected.
     x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
-    eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
-    # Here we draw the square around the nose, face and eyes that is detected.
+    # Here we draw the square around the nose, face and nose that is detected.
     if len(nose_rect) > 0:
         print("Only Nose at ", nose_rect)
         for (x, y, w, h) in nose_rect:
@@ -79,10 +71,12 @@ while True:
             # m (the variable created before), should move the mouse using the x, and y variable from the nose rect.
             # We accelerate movement speed by 4 to make it possible to navigate the cursor through the whole screen.
             m.move(x * 4, y * 4)
-            if cv2.waitKey(1) & 0xFF == ord('c'):
+            if cv2.waitKey(1) & 0xFF == ord('r'):
+                m.click(x * 4, y * 4, 2)
+                print("CLICK")
+            if cv2.waitKey(1) & 0xFF == ord('l'):
                 m.click(x * 4, y * 4, 1)
                 print("CLICK")
-
         # TODO: Write and if that goes into face if nose is not visible
     elif len(face_rect) > 0:
         print("Only Face at ", face_rect)
