@@ -13,10 +13,10 @@ You can define what buttons you want to be the mouse buttons in this part of the
 ```python
       if cv2.waitKey(1) & 0xFF == ord('r'):
                 m.click(x * 4, y * 4, 2)
-                print("CLICK")
+                print("Right CLICK")
       if cv2.waitKey(1) & 0xFF == ord('l'):
                 m.click(x * 4, y * 4, 1)
-                print("CLICK")
+                print("Left CLICK")
 ```
 Here `ord('r')` allows you to right click using the r key and `ord('l')` allows you to left click using the l key. These can be changed to anything you want, if you are using direct ASCII values remove the "ord" part.
 
