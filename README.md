@@ -19,5 +19,5 @@ For mouse movement there are differnet requirements for different operating syst
 * [AppKit](https://developer.apple.com/documentation/appkit)
 
 
-See example usecase inn the [example folder](https://github.com/AndreasJacobsen/noseCV/blob/master/example/README.md)
+See example usecase in the [example folder](https://github.com/AndreasJacobsen/noseCV/blob/master/example/README.md)
 
