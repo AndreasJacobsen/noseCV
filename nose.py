@@ -30,14 +30,14 @@ m = PyMouse()
 
 # Error handling for empty files, due to us not wanting to force user to install GTK or QT.
 # These errors are displayed in the terminal instead.
-# TODO: Do something else than cv2.destroyAllWindows() as windows are not live yet.
+# Quiting the program if one of the files are missing.
 if nose_cascade.empty():
     raise IOError('Unable to load the nose cascade xml file')
-    cv2.destroyAllWindows()
+    quit()
 
 if face_cascade.empty():
     raise IOError('Unable to load the face cascade xml file')
-    cv2.destroyAllWindows()
+    quit()
 
 
 # Here we create a variable cap that contains the information about which camera the program is to use.
@@ -64,6 +64,7 @@ while True:
     x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and nose that is detected.
+    # If we find something in nose_rect we start a loop to draw any nose that is found.
     if len(nose_rect) > 0:
         print("Only Nose at ", nose_rect)
         for (x, y, w, h) in nose_rect:
@@ -71,32 +72,40 @@ while True:
             # m (the variable created before), should move the mouse using the x, and y variable from the nose rect.
             # We accelerate movement speed by 4 to make it possible to navigate the cursor through the whole screen.
             m.move(x * 4, y * 4)
+            # Here we listen for a click of R button or L button to right-click or left-click.
+            # The 3D-printed buttons have been mapped to R and L key.
             if cv2.waitKey(1) & 0xFF == ord('r'):
                 m.click(x * 4, y * 4, 2)
-                print("CLICK")
+                print("Right CLICK")
             if cv2.waitKey(1) & 0xFF == ord('l'):
                 m.click(x * 4, y * 4, 1)
-                print("CLICK")
-        # TODO: Write and if that goes into face if nose is not visible
+                print("Left CLICK")
+        # The following else if is a fallback to give some navigation options if nose is not detected.
+        # If no nose is detected fall back to finding face and navigate with it.
+        # There is some issues with the accuracy of the face detect but as a backup it is ok.
     elif len(face_rect) > 0:
         print("Only Face at ", face_rect)
         for (x, y, w, h) in face_rect:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
-    elif len(face_rect) > 0:
-        print("Only Eye at ", eye_rect)
-        for (x, y, w, h) in eye_rect:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (205, 0, 0), 3)
+            m.move(x * 4, y * 4)
+            # Here we listen for a click of R button or L button to right-click or left-click.
+            # The 3D-printed buttons have been mapped to R and L key.
+            if cv2.waitKey(1) & 0xFF == ord('r'):
+                m.click(x * 4, y * 4, 2)
+                print("Right CLICK")
+            if cv2.waitKey(1) & 0xFF == ord('l'):
+                m.click(x * 4, y * 4, 1)
+                print("Left CLICK")
     else:
         print("Nothing detected.")
-
+    # Show the current frame that is captured in and create the window named Rhino-Control.
     cv2.imshow('Rhino-Control', frame)
 
     # Waiting 1 millisecond to show the next frame.
     time.sleep(0.001)
     if cv2.waitKey(2) & 0xFF == ord('q'):
-        # Exit on pressing 'q'.
+        # Exit on pressing 'q' when nose is not detected.
         break
-        # Exit on pressing 'q'.
 # Here we release the web cam to be used by other programs before we shut down the program.
 cap.release()
 # Terminating the window the software is running in. 
