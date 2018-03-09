@@ -64,50 +64,38 @@ while True:
     nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
     x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
-    # Here we draw the square around the nose, face and nose that is detected.
-    # If we find something in nose_rect we start a loop to draw any nose that is found.
-    if len(nose_rect) > 0:
-        print("Only Nose at ", nose_rect)
-        for (x, y, w, h) in nose_rect:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 3)
-            # m (the variable created before), should move the mouse using the x, and y variable from the nose rect.
-            # We accelerate movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-            m.move(x * 4, y * 4)
-            # Here we listen for a click of R button or L button to right-click or left-click.
-            # The 3D-printed buttons have been mapped to R and L key.
-            if cv2.waitKey(1) & 0xFF == ord('r'):
-                m.click(x * 4, y * 4, 2)
-                print("Right CLICK")
-            if cv2.waitKey(1) & 0xFF == ord('l'):
-                m.click(x * 4, y * 4, 1)
-                print("Left CLICK")
-        # The following else if is a fallback to give some navigation options if nose is not detected.
-        # If no nose is detected fall back to finding face and navigate with it.
-        # There is some issues with the accuracy of the face detect but as a backup it is ok.
-    elif len(face_rect) > 0:
-        print("Only Face at ", face_rect)
-        for (x, y, w, h) in face_rect:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
-            m.move(x * 4, y * 4)
-            # Here we listen for a click of R button or L button to right-click or left-click.
-            # The 3D-printed buttons have been mapped to R and L key.
-            if cv2.waitKey(1) & 0xFF == ord('r'):
-                m.click(x * 4, y * 4, 2)
-                print("Right CLICK")
-            if cv2.waitKey(1) & 0xFF == ord('l'):
-                m.click(x * 4, y * 4, 1)
-                print("Left CLICK")
+    eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
+    # Here we draw the square around the nose, face and eyes that is detected.
+    if(len(nose_rect)>0): 
+        print ("Only Nose at ",nose_rect)
+        for (x,y,w,h) in nose_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 3)
+            #Here we say that m (the variable created before, should move the mouse using the x, and y variable from the nose rect.
+            # We have acellerated movement speed by 4 to make it possible to navigate the cursor through the whole screen.
+            m.move(x * 4, y * 4) # TODO: Write and if that goes into face if nose is not visible
+    elif (len(face_rect)>0):
+        print ("Only Face at ",face_rect)
+        for (x,y,w,h) in face_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 3)
+    elif (len(face_rect)>0):
+        print ("Only Eye at ",eye_rect)
+        for (x,y,w,h) in eye_rect:
+            cv2.rectangle(frame, (x,y), (x+w,y+h), (205,0,0), 3)
     else:
         print("Nothing detected.")
     # Show the current frame that is captured in and create the window named Rhino-Control.
     cv2.imshow('Rhino-Control', frame)
 
-    # Waiting 1 millisecond to show the next frame.
-    time.sleep(0.001)
-    if cv2.waitKey(2) & 0xFF == ord('q'):
-        # Exit on pressing 'q' when nose is not detected.
+    
+    cv2.imshow('Nesehorn deteksjonsprogram', frame)
+
+    time.sleep(0.001) # Waiting 1 millisecond to show the next frame.
+    if (cv2.waitKey(1) & 0xFF == ord('q')):#exit on pressing 'q'
         break
-# Here we release the web cam to be used by other programs before we shut down the program.
+    if (cv2.waitKey(1) == 27):
+        break
+
+# Here we release the webcam to be used by other programs before we shut down the program.
 cap.release()
 # Terminating the window the software is running in. 
 cv2.destroyAllWindows()
