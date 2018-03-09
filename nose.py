@@ -9,10 +9,10 @@ import os
 from pymouse import PyMouse
 
 ##########################! PLEASE NOTE !############################
-#                   PLEASE NOTE This program requires pywin32 to run in Windows                         #
-#           Sadly since pywin32 contains allot of C++ it cannot be installed through pip              #
-#     Download PyWin executable from https://github.com/mhammond/pywin32/releases    #
-#                   Works in Linux through pip packages included in requirements.txt                       #
+#                   PLEASE NOTE This program requires pywin32 to run in Windows                                             #
+#           Sadly since pywin32 contains allot of C++ it cannot be installed through pip                                #
+#     Download PyWin executable from https://github.com/mhammond/pywin32/releases                   #
+#                   Works in Linux through pip packages included in requirements.txt                                            #
 #################################################################
 
 # Here we download the nose cascade, face cascade and eye cascade file.
@@ -62,8 +62,8 @@ while True:
     # Since the face-detector only works on black and white images we do a conversion to BGR2GRAY here.
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
-    w1 = cap.get(3)-60
-    h1 = cap.get(4)-60
+    w1 = cap.get(3) - 240
+    h1 = cap.get(4) - 240
     w_dim, h_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and nose that is detected.
@@ -74,18 +74,20 @@ while True:
         for (x, y, w, h) in nose_rect:
 
             cv2.rectangle(frame, (x, y), (w+x, y+h), (0, 0, 255), 3)
-            x1 = x + 30
-            y1 = y + 30
+            y1 = y
+            x1 = x
             # m (the variable created before), should move the mouse using the x, and y variable from the nose rect.
             # We accelerate movement speed by 4 to make it possible to navigate the cursor through the whole screen.
-            m.move((x1*w_dim)/w1, (y1*h_dim)/h1)
+            noseX = int(round((x1*w_dim)/w1))
+            noseY = int(round((y1*h_dim)/h1))
+            m.move(noseX, noseY)
             # Here we listen for a click of R button or L button to right-click or left-click.
             # The 3D-printed buttons have been mapped to R and L key.
             if cv2.waitKey(1) & 0xFF == ord('r'):
-                m.click(x * 4, y * 4, 2)
+                m.click(noseX, noseY, 2)
                 print("Right CLICK")
             if cv2.waitKey(1) & 0xFF == ord('l'):
-                m.click(x * 4, y * 4, 1)
+                m.click(noseX, noseY, 1)
                 print("Left CLICK")
         # The following else if is a fallback to give some navigation options if nose is not detected.
         # If no nose is detected fall back to finding face and navigate with it.
@@ -94,14 +96,19 @@ while True:
         print("Only Face at ", face_rect)
         for (x, y, w, h) in face_rect:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
-            m.move(x * 4, y * 4)
+            x2 = x
+            y2 = y
+
+            faceX = int(round((x2 * w_dim) / w1))
+            faceY = int(round((y2 * h_dim) / h1))
+            m.move(faceX, faceY)
             # Here we listen for a click of R button or L button to right-click or left-click.
             # The 3D-printed buttons have been mapped to R and L key.
             if cv2.waitKey(1) & 0xFF == ord('r'):
-                m.click(x * 4, y * 4, 2)
+                m.click(faceX, faceY, 2)
                 print("Right CLICK")
             if cv2.waitKey(1) & 0xFF == ord('l'):
-                m.click(x * 4, y * 4, 1)
+                m.click(faceX, faceY, 1)
                 print("Left CLICK")
     else:
         print("Nothing detected.")
