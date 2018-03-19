@@ -2,7 +2,7 @@
 This given example was run using Linux Mint 18.3 as operating system.
 
 #### Requirements
-* [antimicro](https://github.com/AntiMicro/antimicro)
+* [antimicro](https://github.com/AntiMicro/antimicro) (or any other input mapper) 
 * [Requirements for Rhino](https://github.com/AndreasJacobsen/noseCV/blob/master/README.md)
 ## Alternate input
 Rhino can use any input from input devices supported by the OS, including [compose key](https://en.wikipedia.org/wiki/Compose_key) input.
