@@ -64,7 +64,6 @@ while True:
     nose_rect = nose_cascade.detectMultiScale(gray, 1.3, 5)
     x_dim, y_dim = m.screen_size()
     face_rect = face_cascade.detectMultiScale(gray, 1.3, 5)
-    eye_rect = eye_cascade.detectMultiScale(gray, 1.3, 5)
     # Here we draw the square around the nose, face and eyes that is detected.
     if(len(nose_rect)>0): 
         print ("Only Nose at ",nose_rect)
