@@ -18,7 +18,7 @@ from pymouse import PyMouse
 # Here we download the nose cascade, face cascade and eye cascade file.
 # This is the xml files that contains the code for recognizing  specific parts of the body.
 # The file is obtained from :
-# https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xml
+# https://github.com/opencv/opencv_contrib/blob/master/modules/face/data/cascades/haarcascade_mcs_nose.xmlq
 # Here we create a relative path so that the software can be used on different computers without getting path errors.
 directory = os.path.dirname(__file__)
 noseXML = os.path.join(directory, 'cascade/haarcascade_mcs_nose.xml')
